@@ -204,7 +204,7 @@ def tim_sort(a):
                 yield arr
         size *= 2
 
-# ------------------------------ Visualization ------------------------------
+
 
 ALGORITHMS = {
     'Bubble': bubble_sort,
