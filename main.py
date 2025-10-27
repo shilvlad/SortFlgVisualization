@@ -163,12 +163,46 @@ def gnome_sort(a: List[int]):
         yield arr
 
 
-def tim_sort(a: List[int]):
+def tim_sort(a):
     arr = a
-    sorted_arr = sorted(arr)
-    for i in range(len(arr)):
-        arr[i] = sorted_arr[i]
-        yield arr
+    min_run = 32
+    n = len(arr)
+
+
+    for start in range(0, n, min_run):
+        end = min(start + min_run, n)
+        for i in range(start + 1, end):
+            key = arr[i]
+            j = i - 1
+            while j >= start and arr[j] > key:
+                arr[j + 1] = arr[j]
+                j -= 1
+                yield arr
+            arr[j + 1] = key
+            yield arr
+
+
+    size = min_run
+    while size < n:
+        for left in range(0, n, 2 * size):
+            mid = min(n, left + size)
+            right = min(n, left + 2 * size)
+            merged = []
+            i, j = left, mid
+            while i < mid and j < right:
+                if arr[i] < arr[j]:
+                    merged.append(arr[i])
+                    i += 1
+                else:
+                    merged.append(arr[j])
+                    j += 1
+                yield arr
+            merged.extend(arr[i:mid])
+            merged.extend(arr[j:right])
+            for i in range(len(merged)):
+                arr[left + i] = merged[i]
+                yield arr
+        size *= 2
 
 # ------------------------------ Visualization ------------------------------
 
